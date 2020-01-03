@@ -1,11 +1,29 @@
 {
-    "name": "adriano/document-distance",
-    "description": "Document distance calculation",
-    "authors": [
-        {
-            "name": "Adriano Ferreira",
-            "email": "adrianokta@gmail.com"
-        }
-    ],
-    "require": {}
+  "name": "adrianoferreira/document-distance",
+  "description": "A simple library for calculating the distance between two documents through the cosine similarity algorithm.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Adriano Ferreira",
+      "email": "adrianokta@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/adrianosferreira/document-distance/issues"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "AdrianoFerreira\\DD\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AdrianoFerreira\\DD\\": "tests"
+    }
+  }
 }
