@@ -1,0 +1,11 @@
+{
+    "name": "adriano/document-distance",
+    "description": "Document distance calculation",
+    "authors": [
+        {
+            "name": "Adriano Ferreira",
+            "email": "adrianokta@gmail.com"
+        }
+    ],
+    "require": {}
+}
