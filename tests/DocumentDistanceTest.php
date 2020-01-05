@@ -5,7 +5,7 @@ namespace AdrianoFerreira\DD;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-class TestDocumentDistance extends TestCase {
+class DocumentDistanceTest extends TestCase {
 
 	/**
 	 * @test
