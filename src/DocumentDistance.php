@@ -4,30 +4,28 @@ namespace AdrianoFerreira\DD;
 
 class DocumentDistance {
 
+	const BUFFER_LENGTH = 4096;
+
 	/**
 	 * @param string $file1
 	 * @param string $file2
-	 * @param bool   $f1Remote
-	 * @param bool   $f2Remote
 	 *
 	 * @return int
 	 */
-	public function getFilesPercentageDistance( $file1, $file2, $f1Remote = false, $f2Remote = false ) {
-		list( $f1Data, $f2Data ) = $this->getFilesData( $file1, $file2, $f1Remote, $f2Remote );
+	public function getFilesPercentSimilarity( $file1, $file2 ) {
+		list( $f1Data, $f2Data ) = $this->getFilesData( $file1, $file2 );
 
-		return $this->getPercentageDistance( $f1Data, $f2Data );
+		return $this->getPercentSimilarity( $f1Data, $f2Data );
 	}
 
 	/**
 	 * @param string $file1
 	 * @param string $file2
-	 * @param bool   $f1Remote
-	 * @param bool   $f2Remote
 	 *
 	 * @return float
 	 */
-	public function getFilesArcSize( $file1, $file2, $f1Remote = false, $f2Remote = false ) {
-		list( $f1Data, $f2Data ) = $this->getFilesData( $file1, $file2, $f1Remote, $f2Remote );
+	public function getFilesArcSize( $file1, $file2 ) {
+		list( $f1Data, $f2Data ) = $this->getFilesData( $file1, $file2 );
 
 		return $this->getArcSize( $f1Data, $f2Data );
 	}
@@ -38,10 +36,10 @@ class DocumentDistance {
 	 *
 	 * @return int
 	 */
-	public function getPercentageDistance( $text1, $text2 ) {
-		$result = $this->getDistance( $text1, $text2 );
+	public function getPercentSimilarity( $text1, $text2 ) {
+		$arcSize = $this->getArcSize( $text1, $text2 );
 
-		return 100 - (int) ( ( $result * 100 ) / 1.57 );
+		return 100 - (int) ( ( $arcSize * 100 ) / 1.57 );
 	}
 
 	/**
@@ -51,50 +49,6 @@ class DocumentDistance {
 	 * @return float
 	 */
 	public function getArcSize( $text1, $text2 ) {
-		return $this->getDistance( $text1, $text2 );
-	}
-
-	private function getFilesData( $file1, $file2, $f1Remote = false, $f2Remote = false ) {
-		$f1 = __DIR__ . '/../' . $file1;
-		$f2 = __DIR__ . '/../' . $file2;
-
-		if ( $f1Remote ) {
-			$f1 = $file1;
-		}
-
-		if ( $f2Remote ) {
-			$f2 = $file2;
-		}
-
-		if ( ! $f1Remote && ! file_exists( $f1 ) ) {
-			throw new \BadMethodCallException( 'File 1 not found' );
-		}
-
-		if ( ! $f2Remote && ! file_exists( $f2 ) ) {
-			throw new \BadMethodCallException( 'File 2 not found' );
-		}
-
-		$file1Handle = fopen( $f1, 'r' );
-		$file2Handle = fopen( $f2, 'r' );
-
-		$f1Data = '';
-		$f2Data = '';
-
-		$buffer1 = fgets( $file1Handle, 4096 );
-		$buffer2 = fgets( $file2Handle, 4096 );
-
-		while ( $buffer1 || $buffer2 ) {
-			$f1Data .= $buffer1;
-			$f2Data .= $buffer2;
-
-			$buffer1 = fgets( $file1Handle, 4096 );
-			$buffer2 = fgets( $file2Handle, 4096 );
-		}
-
-		return [ $f1Data, $f2Data ];
-	}
-
-	private function getDistance( $text1, $text2 ) {
 		$s1Frequency = $this->getFrequency( $text1 );
 		$s2Frequency = $this->getFrequency( $text2 );
 
@@ -104,7 +58,48 @@ class DocumentDistance {
 		return acos( $numerator / $denominator );
 	}
 
-	private function innerProduct( $l1, $l2 ) {
+	/**
+	 * @param string $file1
+	 * @param string $file2
+	 *
+	 * @return array
+	 */
+	private function getFilesData( $file1, $file2 ) {
+		if ( ! file_exists( $file1 ) ) {
+			throw new \BadMethodCallException( 'File 1 not found' );
+		}
+
+		if ( ! file_exists( $file2 ) ) {
+			throw new \BadMethodCallException( 'File 2 not found' );
+		}
+
+		$file1Handle = fopen( $file1, 'r' );
+		$file2Handle = fopen( $file2, 'r' );
+
+		$f1Data = '';
+		$f2Data = '';
+
+		$buffer1 = fgets( $file1Handle, self::BUFFER_LENGTH );
+		$buffer2 = fgets( $file2Handle, self::BUFFER_LENGTH );
+
+		while ( $buffer1 || $buffer2 ) {
+			$f1Data .= $buffer1;
+			$f2Data .= $buffer2;
+
+			$buffer1 = fgets( $file1Handle, self::BUFFER_LENGTH );
+			$buffer2 = fgets( $file2Handle, self::BUFFER_LENGTH );
+		}
+
+		return [ $f1Data, $f2Data ];
+	}
+
+	/**
+	 * @param array $l1
+	 * @param array $l2
+	 *
+	 * @return float|int
+	 */
+	private function innerProduct( array $l1, array $l2 ) {
 		$sum = 0.0;
 		foreach ( $l1 as $key => $val ) {
 			foreach ( $l2 as $key2 => $val2 ) {
@@ -117,17 +112,19 @@ class DocumentDistance {
 		return $sum;
 	}
 
+	/**
+	 * @param string $s
+	 *
+	 * @return array
+	 */
 	private function getFrequency( $s ) {
 		$table = [];
 		$temp  = '';
 		$len   = strlen( $s );
 
 		for ( $i = 0; $i <= $len; $i ++ ) {
-			if ( ! isset( $s[ $i ] ) ) {
-				continue;
-			}
 
-			if ( $s[ $i ] === ' ' || $s[ $i ] === PHP_EOL || $i === strlen( $s ) ) {
+			if ( $temp && ( ! isset( $s[ $i ] ) || $s[ $i ] === ' ' || $s[ $i ] === PHP_EOL || $i === strlen( $s ) ) ) {
 
 				if ( ! isset( $table[ $temp ] ) ) {
 					$table[ $temp ] = 0;
@@ -142,7 +139,9 @@ class DocumentDistance {
 				continue;
 			}
 
-			$temp .= $s[ $i ];
+			if ( $s[ $i ] !== ' ' ) {
+				$temp .= $s[ $i ];
+			}
 		}
 
 		return $table;

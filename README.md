@@ -22,39 +22,32 @@ $ composer require adrianoferreira/document-distance:dev-master
 
 ## Usage
 
-Calculating similarity percentage between two local files:
+Calculating similarity percentage between two remote files:
 
 ```php
 $test = new DocumentDistance();
-echo $test->getFilesPercentageDistance( 'test.txt', 'test2.txt' );
+echo $test->getFilesPercentSimilarity( 'http://test.com/test.txt', 'http://test.com/test2.txt' );
 ```
 
 Calculating arc size between two local files:
 
 ```php
 $test = new DocumentDistance();
-echo $test->getFilesArcSize( 'test.txt', 'test2.txt' );
+echo $test->getFilesArcSize( __DIR__ . 'test.txt', __DIR__ . 'test2.txt' );
 ```
 
 Calculating similarity percentage between two arbitrary strings:
 
 ```php
 $test = new DocumentDistance();
-echo $test->getPercentageDistance( 'test 123 456', 'test 678 000' );
+echo $test->getPercentSimilarity( 'test 123 456', 'test 678 000' );
 ```
 
 Calculating arc size between arbitrary strings:
 
 ```php
 $test = new DocumentDistance();
-echo $test->getFilesArcSize( 'test 123 456', 'test 678 000' );
-```
-
-You can also combine a local and a remote file:
-
-```php
-$test = new DocumentDistance();
-echo $test->getFilesPercentageDistance( 'http://something.com/some-remote-file.txt', 'text.txt', true );
+echo $test->getArcSize( 'test 123 456', 'test 678 000' );
 ```
 
 ## References
