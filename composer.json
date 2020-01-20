@@ -14,6 +14,7 @@
     "issues": "https://github.com/adrianosferreira/document-distance/issues"
   },
   "require-dev": {
+    "phpunit/phpunit": "8.3.3 as 8.3.0",
     "mikey179/vfsstream": "^1.6"
   },
   "autoload": {
@@ -25,8 +26,5 @@
     "psr-4": {
       "AdrianoFerreira\\DD\\": "tests"
     }
-  },
-  "require": {
-    "phpunit/phpunit": "8.3.3 as 8.3.0"
   }
 }
