@@ -24,8 +24,8 @@ class DocumentDistanceTest extends TestCase {
 		file_put_contents( $file, $content1 );
 		file_put_contents( $file2, $content2 );
 
-		$dd = new DocumentDistance();
-		$this->assertEquals( 100, $dd->getFilesPercentSimilarity( $file, $file2 ) );
+		$dd = new File( $file, $file2 );
+		$this->assertEquals( 100, $dd->getPercent() );
 	}
 
 	public function dpFilesSameContent() {
@@ -62,8 +62,8 @@ class DocumentDistanceTest extends TestCase {
 		file_put_contents( $file, $content1 );
 		file_put_contents( $file2, $content2 );
 
-		$dd = new DocumentDistance();
-		$this->assertTrue( $dd->getFilesPercentSimilarity( $file, $file2 ) < 100 );
+		$dd = new File( $file, $file2 );
+		$this->assertTrue( $dd->getPercent() < 100 );
 	}
 
 	public function dpFilesWithContentNotTotallyEqual() {
@@ -100,8 +100,8 @@ class DocumentDistanceTest extends TestCase {
 		file_put_contents( $file, $content1 );
 		file_put_contents( $file2, $content2 );
 
-		$dd = new DocumentDistance();
-		$this->assertSame( 0, $dd->getFilesPercentSimilarity( $file, $file2 ) );
+		$dd = new File($file, $file2);
+		$this->assertSame( 0, $dd->getPercent() );
 	}
 
 	public function dpFilesWithTotallyDifferentContent() {
