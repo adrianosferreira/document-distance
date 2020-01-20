@@ -1,6 +1,7 @@
 # Document Distance - Cosine Similarity
 
 [![Build Status](https://travis-ci.org/adrianosferreira/document-distance.svg?branch=master)](https://travis-ci.org/adrianosferreira/document-distance)
+[![Build Status](https://codecov.io/gh/adrianosferreira/document-distance/branch/master/graph/badge.svg)](https://codecov.io/gh/adrianosferreira/document-distance)
 [![Total Downloads](https://poser.pugx.org/adrianoferreira/document-distance/downloads)](https://packagist.org/packages/adrianoferreira/document-distance)
 [![License](https://poser.pugx.org/adrianoferreira/document-distance/license)](https://packagist.org/packages/adrianoferreira/document-distance)
 
