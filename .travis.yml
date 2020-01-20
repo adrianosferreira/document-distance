@@ -17,3 +17,6 @@ before_script:
 script:
   - if [[ "$ANALYSIS" != 'true' ]]; then vendor/bin/phpunit ; fi
   - if [[ "$ANALYSIS" == 'true' ]]; then vendor/bin/phpunit --coverage-clover clover.xml ; fi
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
