@@ -76,6 +76,3 @@ abstract class DocumentDistance
         return $table;
     }
 }
-
-$text = ( new AdrianoFerreira\DD\Text('something', 'something test 123') )->getPercent();
-$file = ( new File( 'something', 'something' ) )->getArcSize();
