@@ -8,8 +8,7 @@
 				 beStrictAboutTodoAnnotatedTests="true"
 				 beStrictAboutChangesToGlobalState="true"
 				 beStrictAboutCoversAnnotation="true"
-				 beStrictAboutResourceUsageDuringSmallTests="true"
-				 forceCoversAnnotation="true">
+				 beStrictAboutResourceUsageDuringSmallTests="true">
 	<testsuites>
 		<testsuite name="Document Distance Test Suite">
 			<directory>./tests/</directory>

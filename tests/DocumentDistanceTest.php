@@ -120,4 +120,40 @@ class DocumentDistanceTest extends TestCase {
 			]
 		];
 	}
+
+    /**
+     * @test
+     * @dataProvider dpFilesSameContent
+     *
+     * @param $content1
+     * @param $content2
+     */
+    public function itChecksTextsSameContent( $content1, $content2 ) {
+        $dd = new Text( $content1, $content2 );
+        $this->assertEquals( 100, $dd->getPercent() );
+    }
+
+    /**
+     * @test
+     * @dataProvider dpFilesWithContentNotTotallyEqual
+     *
+     * @param $content1
+     * @param $content2
+     */
+    public function itChecksTextsWithContentNotTotallyEqual( $content1, $content2 ) {
+        $dd = new Text( $content1, $content2 );
+        $this->assertTrue( $dd->getPercent() < 100 );
+    }
+
+    /**
+     * @test
+     * @dataProvider dpFilesWithTotallyDifferentContent
+     *
+     * @param $content1
+     * @param $content2
+     */
+    public function itChecksTextsWithTotallyDifferentContent( $content1, $content2 ) {
+        $dd = new Text($content1, $content2);
+        $this->assertSame( 0, $dd->getPercent() );
+    }
 }
